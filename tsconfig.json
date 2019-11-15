@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "allowJs": true,
+    "jsx": "react",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "charset": "utf-8",
+    "moduleResolution": "node",
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "importHelpers": true,
+    "typeRoots": [
+      "./node_modules/@types/",
+      "./src/@types"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "*"
+      ],
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "lib": [
+      "es2016",
+      "dom"
+    ]
+  }
+}
