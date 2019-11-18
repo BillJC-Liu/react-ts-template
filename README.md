@@ -19,5 +19,6 @@ react ts 模板
 
   当`"module":"commonjs"`时，它无法解析到`react-dom`中的`render`方法，或者是`react`中`createElement`方法。需要改为`"module":"esnext"`，`lib`中同时需要`esnext`。
   
+  > https://jkchao.github.io/typescript-book-chinese/project/dynamicImportExpressions.html
   > 使用 "module": "esnext" 选项：TypeScript 为 Webpack Code Splitting 生成 import() 语句。
   > 进一步了解有关信息，推荐阅读这篇文章：Dynamic Import Expressions and webpack 2 Code Splitting integration with TypeScript 2.4.
