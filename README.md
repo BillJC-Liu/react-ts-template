@@ -3,7 +3,7 @@ react ts 模板
 ## 记录下我在搭建这个模板的过程中遇到的问题
  
 # webpack 配置项
-```javascript 
+(```javascript 
   // 添加需要解析的文件格式
   resolve: {
     // 这里需要注意 不能是单引号 会导致引入的组件 undefined
