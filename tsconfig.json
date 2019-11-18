@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "esnext",
     "allowJs": true,
     "jsx": "react",
     "noImplicitAny": false,
@@ -15,9 +15,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "importHelpers": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "typeRoots": [
-      "./node_modules/@types/",
-      "./src/@types"
+      "./node_modules/@types/"
     ],
     "baseUrl": ".",
     "paths": {
@@ -30,7 +31,16 @@
     },
     "lib": [
       "es2016",
-      "dom"
+      "dom",
+      "esnext"
     ]
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "bundle",
+    "scripts",
+  ],
+  "include": [
+    "./src/**/*"
+  ]
 }

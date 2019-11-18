@@ -1,10 +1,8 @@
-import * as React from 'react'
+import React from 'react'
 
 const App = (props) => {
   return (
-    <div>
-      index
-    </div>
+    <div>index</div>
   )
 }
 
