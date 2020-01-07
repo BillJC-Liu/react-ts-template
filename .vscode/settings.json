@@ -3,6 +3,7 @@
     "es",
     "esnext",
     "interop",
-    "module"
+    "module",
+    "woff"
   ]
 }
