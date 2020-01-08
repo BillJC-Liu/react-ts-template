@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn -i
+  /usr/local/bin/node /usr/local/bin/yarn add clean-webpack-plugin
 
 PATH: 
   /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: EACCES: permission denied, mkdir '/Users/jc.liu/Desktop/learning/react-ts-template/node_modules/bonjour/node_modules/array-flatten'
+  Error: EACCES: permission denied, mkdir '/Users/jc.liu/Desktop/learning/react-ts-template/node_modules/@types/anymatch'
 
 npm manifest: 
   {
@@ -757,7 +757,7 @@ Lockfile:
     resolved "https://registry.npm.taobao.org/atob/download/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
     integrity sha1-bZUX654DDSQ2ZmZR6GvZ9vE1M8k=
   
-  autoprefixer@^9.6.1, autoprefixer@^9.7.3:
+  autoprefixer@^9.6.1:
     version "9.7.3"
     resolved "https://registry.npm.taobao.org/autoprefixer/download/autoprefixer-9.7.3.tgz?cache=0&sync_timestamp=1575126845828&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fautoprefixer%2Fdownload%2Fautoprefixer-9.7.3.tgz#fd42ed03f53de9beb4ca0d61fb4f7268a9bb50b4"
     integrity sha1-/ULtA/U96b60yg1h+09yaKm7ULQ=

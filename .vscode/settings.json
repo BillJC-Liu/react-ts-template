@@ -1,9 +1,11 @@
 {
   "cSpell.ignoreWords": [
+    "chunkhash",
     "es",
     "esnext",
     "interop",
     "module",
     "woff"
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
