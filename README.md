@@ -1,5 +1,14 @@
 # react-ts-template
 react ts 模板
+
+## 结构
+- 整体技术栈：React react-router redux antd ts(x) 
+- 支持sass less
+- 默认引入antd 支持css 或者 less ，默认css，有需要修改主题的自行在package中修改less
+- 支持ts(x) 和js(x)，建议统一代码方式。默认tsx
+  
+
+
 ## 记录下我在搭建这个模板的过程中遇到的问题
  
 ### webpack 配置项
@@ -12,7 +21,7 @@ react ts 模板
   },
 ```
 
-### tsconfig 中 module：esnext 的问题
+### tsconfig 中 module 问题
   `module`是用来指定要使用的模块标准: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. 
   
   `lib`用于指定要包含在编译中的库文件: ["es6", "dom" , "esnext"]
@@ -24,3 +33,17 @@ react ts 模板
   > 使用 "module": "esnext" 选项：TypeScript 为 Webpack Code Splitting 生成 import() 语句。
   
   > 进一步了解有关信息，推荐阅读这篇文章：Dynamic Import Expressions and webpack 2 Code Splitting integration with TypeScript 2.4.
+
+## webpack配置中遇到的问题
+
+### 1. devServer 中的 historyApiFallback
+
+&emsp;&emsp;react-router 中提供两个路由属性，`BrowserRouter` 与 `HashHistory`。`BrowserRouter`是服务端路由，`HashHistory`是前端路由。
+
+&emsp;&emsp;`HashHistory`会在根路由后面带一个`#`号，`#`号后面的路由不会传给服务器，所以服务器返回的始终是根路由的页面（index.html），所以index.html会始终引用到打包好的bundle.js。在展示上带个`#`号会相对不雅观。
+
+&emsp;&emsp;`BrowserRouter`不会有`#`号，他会把整个路由传给服务器。如果服务器找不到页面，页面就是丢失，展示`404`。所以将`historyApiFallback：true`。告诉服务器，当页面不存在时，就返回根路径。从而能加载到bundle.js。
+
+### 2. 对于jsx|js 文件中使用可选链和双问好语法配置
+&emsp;&emsp;在babel中加入两个插件包即可。 `@babel/plugin-proposal-optional-chaining`  `@babel/plugin-proposal-nullish-coalescing-operator`
+
