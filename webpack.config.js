@@ -79,7 +79,6 @@ module.exports = function (webpackEnv = 'development') {
         }
       );
     }
-
     return loaders
   }
 
@@ -239,8 +238,7 @@ module.exports = function (webpackEnv = 'development') {
           minifyCSS: true// 压缩内联css
         }
       }),
-      // isEnvDevelopment &&
-      // new webpack.HotModuleReplacementPlugin(),
+      isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
     ].filter(Boolean)
   }
 }
