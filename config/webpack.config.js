@@ -25,7 +25,7 @@ const resolveModule = (resolveFn, filePath) => {
 
 
 
-module.exports = function (webpackEnv = 'development') {
+module.exports = function (webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development';
   const isEnvProduction = webpackEnv === 'production';
 
@@ -105,7 +105,7 @@ module.exports = function (webpackEnv = 'development') {
     },
     entry: [
       // 引入热模块的包
-      // isEnvDevelopment && require.resolve('react-dev-utils/webpackHotDevClient'),
+      isEnvDevelopment && require.resolve('react-dev-utils/webpackHotDevClient'),
       // 入口文件
       resolveModule(resolveApp, 'src/index'),
       // 引入polyfills 兼容IE
@@ -229,15 +229,31 @@ module.exports = function (webpackEnv = 'development') {
     plugins: [
       // cleanWebpackPlugin 清楚打包好的文件夹
       new CleanWebpackPlugin(),
-      new HtmlWebpackPlugin({
-        filename: "index.html",
-        template: resolveApp('public/index.html'),
-        minify: {
-          removeComments: true, // 去掉注释
-          collapseWhitespace: true, // 删除空白符与换行符
-          minifyCSS: true// 压缩内联css
-        }
-      }),
+      new HtmlWebpackPlugin(
+
+        Object.assign({}, {
+          inject: true,
+          // template: paths.appHtml,
+          template: resolveApp('public/index.html'),
+        }, isEnvProduction ?
+          {
+            minify: {
+              removeComments: true, // 去掉注释
+              collapseWhitespace: true, // 删除空白符与换行符
+              minifyCSS: true, // 压缩内联css
+              removeRedundantAttributes: true,
+              useShortDoctype: true,
+              removeEmptyAttributes: true,
+              removeStyleLinkTypeAttributes: true,
+              keepClosingSlash: true,
+              minifyJS: true,
+              minifyURLs: true,
+            }
+          }
+          :
+          undefined
+        )
+      ),
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
     ].filter(Boolean)
   }

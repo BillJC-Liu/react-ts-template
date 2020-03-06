@@ -6,8 +6,7 @@ const App = (props) => {
 
   return (
     <div>
-      <span></span>
-      11111
+      11111222333334444455566765345
     </div>
   )
 }
