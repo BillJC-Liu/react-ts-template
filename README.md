@@ -2,11 +2,16 @@
 react ts 模板
 
 ## 结构
-- 整体技术栈：React react-router redux antd ts(x) 
-- 支持sass less
-- 默认引入antd 支持css 或者 less ，默认css，有需要修改主题的自行在package中修改less
+- 整体技术栈：React react-router redux antd ts(x) webpack 
+- 支持 sass less css-module
+- 默认引入antd 支持css 或者 less ，默认css
 - 支持ts(x) 和js(x)，建议统一代码方式。默认tsx
-  
+
+## 内部支持/工具
+- 支持js的新语法 `可选链条` `双问号`
+- redux 小工具 `spa-redux-tool` 提高写`reducer` `action`效率，并且代码进行好管理。
+  [spa-redux-tool](https://github.com/BillJC-Liu/spa-redux-tool)
+- iconfont 一键引入工具，无需手动替换字体文件，从iconfont拿到链接，命令一键替换，提高开发效率
 
 
 ## 记录下我在搭建这个模板的过程中遇到的问题

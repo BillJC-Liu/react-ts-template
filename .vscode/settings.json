@@ -5,6 +5,7 @@
     "esnext",
     "interop",
     "module",
+    "sider",
     "woff"
   ],
   "typescript.tsdk": "node_modules/typescript/lib"

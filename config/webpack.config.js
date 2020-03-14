@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const postcssNormalize = require('postcss-normalize');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 process.env.NODE_ENV = 'development'
 
@@ -32,9 +33,18 @@ module.exports = function (webpackEnv) {
   const getStyleLoaders = (cssOptions, preProcessor) => {
     let loaders = [
       isEnvDevelopment && require.resolve('style-loader'),
+      isEnvProduction && {
+        loader: MiniCssExtractPlugin.loader,
+        // options: shouldUseRelativeAssetPaths ? { publicPath: '../../' } : {},
+      },
       {
-        loader: 'css-loader',
-        options: cssOptions
+        loader: '@teamsupercell/typings-for-css-modules-loader'
+      },
+      {
+        loader: require.resolve('css-loader'),
+        options: {
+          ...cssOptions,
+        }
       }, {
         loader: 'postcss-loader',
         options: {
@@ -73,12 +83,12 @@ module.exports = function (webpackEnv) {
         {
           loader: require.resolve(preProcessor),
           options: {
-            sourceMap: true,
-            javascriptEnabled: true
+            sourceMap: isEnvProduction && shouldUseSourceMap,
           },
         }
       );
     }
+
     return loaders
   }
 
@@ -116,8 +126,7 @@ module.exports = function (webpackEnv) {
       // publicPath 可以留空，并且在入口起点文件运行时动态设置。
       // 如果你在编译时不知道 publicPath，你可以先忽略它，
       // 并且在入口起点设置 __webpack_public_path__
-      // publicPath: '/',
-
+      publicPath: '/',
       // 打包出来的路径
       path: path.resolve(process.cwd(), "build"),
       // isEnvDevelopment ? path.resolve(process.cwd(), "build")
@@ -127,7 +136,6 @@ module.exports = function (webpackEnv) {
       // 将js代码进行分割 它应该与filename相同
       // 将页面代码进行分割，减少首页的大小，从而优化首屏速度
       chunkFilename: 'build/[name].[hash:8].js'
-
       // devtoolModuleFilenameTemplate
     },
     // 添加需要解析的文件格式
@@ -136,8 +144,8 @@ module.exports = function (webpackEnv) {
       // 匹配那些后缀名的文件
       extensions: [".ts", ".tsx", ".js", "jsx", ".json"],
       // 自定义别名
-      // 项目中不再需要 ../../ 的方式来寻找路径
       alias: {
+        'react': path.resolve('node_modules/react'),
         '@': resolveApp('src'),
         '@com': resolveApp('src/component'),
         '@page': resolveApp('src/page'),
@@ -203,19 +211,39 @@ module.exports = function (webpackEnv) {
           test: /\.module\.css?$/,
           use: getStyleLoaders({
             importLoaders: 1,
-            sourceMap: true,
+            sourceMap: isEnvProduction && shouldUseSourceMap,
             modules: true,
-            // localIdentName
-            getLocalIdent: '[local]_[hash:base64:6]'
-          })
+            modules: {
+              localIdentName: '[local]_[hash:base64:6]',
+            },
+          }),
         },
         {
           test: /\.(scss|sass)$/,
-          exclude: /\.module\.(scss|sass)$/,
           use: getStyleLoaders({
             importLoaders: 2,
-            sourceMap: true
-          })
+            modules: true,
+            sourceMap: isEnvProduction && shouldUseSourceMap,
+            modules: {
+              localIdentName: '[local]_[hash:base64:6]',
+            },
+            // namedExport: true,
+            // camelCase: true,
+            // minimize: true,
+            // sass: true,
+            // typings-for-css-modules-loader
+          }, 'sass-loader'),
+        },
+        {
+          test: /\.module\.(scss|sass)$/,
+          use: getStyleLoaders(
+            {
+              importLoaders: 2,
+              sourceMap: isEnvProduction && shouldUseSourceMap,
+              modules: true
+            },
+            'sass-loader'
+          ),
         },
         {
           test: /\.less$/,
@@ -223,14 +251,13 @@ module.exports = function (webpackEnv) {
           use: getStyleLoaders({
             importLoaders: 2
           }, 'less-loader')
-        }
+        },
       ]
     },
     plugins: [
       // cleanWebpackPlugin 清楚打包好的文件夹
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin(
-
         Object.assign({}, {
           inject: true,
           // template: paths.appHtml,
@@ -254,7 +281,16 @@ module.exports = function (webpackEnv) {
           undefined
         )
       ),
+      isEnvProduction && new MiniCssExtractPlugin({
+        // Options similar to the same options in webpackOptions.output
+        // both options are optional
+        // static/css/
+        filename: 'index.css',
+        allChunks: true,
+        // filename: '[name].[contenthash:8].css',
+        // chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+      }),
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
-    ].filter(Boolean)
+    ].filter(Boolean),
   }
 }

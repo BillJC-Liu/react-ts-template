@@ -1,0 +1,58 @@
+.layout {
+  height: 100% !important;
+  background-color: #f5f6f8;
+
+  // 折叠的菜单
+  .collapsedMenu {
+    :global {
+      .ant-layout-sider {
+        position: absolute;
+        height: 100%;
+      }
+      .ant-layout-content {
+        padding-left: 76px !important;
+      }
+    }
+  }
+
+  :global {
+    .ant-layout {
+      height: 100% !important;
+    }
+
+    // header
+    .ant-layout-header {
+      height: 48px;
+      line-height: 48px;
+    }
+
+    // content
+    .ant-layout-content {
+      padding: 20px;
+    }
+
+    .ant-layout-sider-trigger {
+      i {
+        &:hover {
+          color: #1890ff;
+        }
+      }
+    }
+
+    // 折叠后
+    .ant-menu-inline-collapsed {
+      width: 56px;
+
+      li > div.ant-menu-submenu-title {
+        padding: 0 !important;
+        text-align: center !important;
+      }
+    }
+
+    .ant-menu-inline,
+    .ant-menu-vertical,
+    .ant-menu-vertical-left {
+      border: 0 !important;
+    }
+  }
+}

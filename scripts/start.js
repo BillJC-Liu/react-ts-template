@@ -29,9 +29,9 @@ const openBrowser = require('react-dev-utils/openBrowser');
 const configFactory = require('../config/webpack.config');
 const createDevServerConfig = require('../config/webpackDevServer.config');
 const HOST = process.env.HOST || '0.0.0.0';
-
+const projectConfig = require('../config')
 // const port = configFactory.devServer && configFactory.devServer.port || '3000'
-const port = parseInt(process.env.PORT, 10) || 3000;
+const port = parseInt(process.env.PORT, 10) || projectConfig.port || 3000;
 
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 const isInteractive = process.stdout.isTTY;

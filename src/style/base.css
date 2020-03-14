@@ -1,0 +1,202 @@
+html,
+body,
+#root {
+  height: 100% !important;
+  -webkit-overflow-scrolling: touch;
+  min-width: 1440px;
+  background-color: #f5f6f8;
+  /* overflow-x: hidden; */
+}
+
+body > div#root {
+  height: 100% !important;
+}
+
+a,
+a:hover,
+a:focus {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+p,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+input,
+body {
+  font-family: "PingFang SC", "PingFang-SC-Regular", "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei",
+    "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:lang(zh) body {
+  font-family: "PingFang SC", "PingFang-SC-Regular", "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei",
+    "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+}
+
+:lang(en) body {
+  font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "PingFang-SC-Regular", "Microsoft Yahei",
+    "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
+}
+
+.pull-left {
+  float: left;
+}
+
+.pull-right {
+  float: right;
+}
+
+.hide {
+  display: none !important;
+}
+
+.show {
+  display: block !important;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.clearfix {
+  zoom: 1;
+}
+
+.clearfix::before {
+  content: " ";
+  display: table;
+}
+
+.clearfix::after {
+  content: " ";
+  display: table;
+  clear: both;
+}
+
+*:not(svg) {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+}
+
+*:focus {
+  outline: 0;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-success {
+  color: #2fa666 !important;
+}
+
+.text-primary {
+  color: #2774fb !important;
+}
+
+.text-orange {
+  color: #ff942c !important;
+}
+
+.text-disabled {
+  color: #dee3e7 !important;
+}
+
+.margin-b-0 {
+  margin-bottom: 0;
+}
+
+.margin-b-10 {
+  margin-bottom: 10px;
+}
+
+.margin-b-20 {
+  margin-bottom: 20px;
+}
+
+.margin-b-70 {
+  margin-bottom: 70px;
+}
+
+.margin-t-70 {
+  margin-top: 70px;
+}
+
+.margin-b-45 {
+  margin-bottom: 45px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mod-wrapper {
+  padding: 90px 0 110px;
+  text-align: center;
+}
+
+.mod-title {
+  font-size: 32px;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  color: #333;
+  line-height: 42px;
+  letter-spacing: 1px;
+}
+
+.mod-desc {
+  max-width: 690px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(102, 102, 102, 1);
+  line-height: 20px;
+  margin: 0 auto 70px;
+  padding-top: 20px;
+}
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.flex-sb {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 滚动条样式 */
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #d7d8d9;
+  height: 80px;
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 隐藏textarea的右下标 */
+/* .hide-resize {
+   resize: none;
+ } */
