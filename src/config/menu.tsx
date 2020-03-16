@@ -2,7 +2,7 @@
  * @Author: JC.Liu
  * @Date: 2020-03-11 17:25:29
  * @Last Modified by: JC.Liu
- * @Last Modified time: 2020-03-14 19:04:21
+ * @Last Modified time: 2020-03-16 14:57:21
  * 菜单表
  */
 import React from 'react'
@@ -17,7 +17,7 @@ import Menu2 from '@/page/menu2'
 import Menu2Home from '@/page/menu2/home'
 import Menu2List from '@/page/menu2/list'
 import App from '@/App'
-
+import ErrorCom from '@/component/common/Error'
 
 const menu = [
   {
@@ -29,9 +29,9 @@ const menu = [
       {
         name: '菜单1-1',
         path: '/menu1/home',
-        display: true,
+        display: true, // 是否展示
         icon: <AntdIcon component={() => <Icon type={IconClass.DIT} />} />,
-        hideChildrenMenuItem: true,
+        hideChildrenMenuItem: true, // 隐藏子路由 
         component: Menu1Home,
         children: [
           {
@@ -60,7 +60,17 @@ const menu = [
             path: '/menu1/list/2',
             display: true,
             icon: <AntdIcon component={() => <Icon type={IconClass.DIT} />} />,
-            component: Menu1HomeDetail
+            component: Menu1HomeDetail,
+            hideChildrenMenuItem: true,
+            children: [
+              {
+                name: '菜单1-2-3',
+                path: '/menu1/list/2/detail',
+                display: false,
+                icon: <AntdIcon component={() => <Icon type={IconClass.DIT} />} />,
+                component: Menu1HomeDetail,
+              }
+            ]
           }
         ]
       },
@@ -93,6 +103,12 @@ const menu = [
     display: false,
     icon: <AntdIcon type="app" />,
     component: App,
+  }, {
+    name: 'error',
+    path: '/error',
+    display: false,
+    icon: <AntdIcon type="app" />,
+    component: ErrorCom,
   }
 ]
 

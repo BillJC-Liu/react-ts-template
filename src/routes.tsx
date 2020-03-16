@@ -2,6 +2,7 @@ import React from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import MenuData from '@/config/menu'
 import Menu1Home from '@/page/menu1/home'
+import Com404 from '@/component/common/404'
 
 interface IRouteItem {
   path: string
@@ -9,7 +10,6 @@ interface IRouteItem {
 }
 
 class Routes extends React.Component<any, any> {
-
   renderRoute(data): Array<IRouteItem> {
     let routeItemData = []
     this.renderRouteItem(data, routeItemData)
@@ -18,20 +18,12 @@ class Routes extends React.Component<any, any> {
 
   renderRouteItem = (data, warpChunk) => {
     if (data?.length) {
-      data.map((item, index) => {
-        if (item.children?.length) {
-          item.component && warpChunk.push({
-            path: item.path,
-            component: item.component,
-          })
-
-          return this.renderRouteItem(item.children, warpChunk)
-        } else {
-          warpChunk.push({
-            path: item.path,
-            component: item.component,
-          })
-        }
+      data.map((item) => {
+        item.component && warpChunk.push({
+          path: item.path,
+          component: item.component,
+        })
+        item.children?.length && this.renderRouteItem(item.children, warpChunk)
       })
     }
   }
@@ -44,6 +36,7 @@ class Routes extends React.Component<any, any> {
           routeData?.length && routeData.map((item, index) => {
             return (
               <Route
+                exact
                 key={index}
                 path={item.path}
                 component={item.component as any}
@@ -51,21 +44,8 @@ class Routes extends React.Component<any, any> {
             )
           })
         }
-
+        <Route component={Com404} />
         <Redirect to="/menu1/home" />
-        {/*
-        <Route exact path="/app" component={App} />
-        <Route exact path="/menu1" component={Menu1} />
-        <Route exact path="/menu1/home" component={Menu1Home} />
-        <Route exact path="/menu1/list" component={Menu2List} /> 
-        <Route exact path="/menu1/list/1" component={Menu2List} />
-        <Route exact path="/menu1/list/2" component={Menu2List} />
-        <Route exact path="/menu1/home/detail" component={Menu1HomeDetail} />
-        <Route exact path="/menu2" component={Menu2} />
-        <Route exact path="/menu2/home" component={Menu2Home} />
-        <Route exact path="/menu2/list" component={Menu2List} />
-        
-        */}
       </Switch >
     )
   }
