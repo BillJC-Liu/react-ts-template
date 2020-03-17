@@ -1,8 +1,6 @@
 import React from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import MenuData from '@/config/menu'
-import Menu1Home from '@/page/menu1/home'
-import Com404 from '@/component/common/404'
 
 interface IRouteItem {
   path: string
@@ -44,9 +42,9 @@ class Routes extends React.Component<any, any> {
             )
           })
         }
-        <Route component={Com404} />
+        {/*  <Route render={() => <Redirect to="/404" />} /> */}
         <Redirect to="/menu1/home" />
-      </Switch >
+      </Switch>
     )
   }
 }

@@ -1,7 +1,7 @@
 # react-ts-template
 react ts 模板
 
-## 结构
+## 技术
 - 整体技术栈：React react-router redux antd ts(x) webpack 
 - 支持 sass less css-module
 - 默认引入antd 支持css 或者 less ，默认css
@@ -12,6 +12,19 @@ react ts 模板
 - redux 小工具 `spa-redux-tool` 提高写`reducer` `action`效率，并且代码进行好管理。
   [spa-redux-tool](https://github.com/BillJC-Liu/spa-redux-tool)
 - iconfont 一键引入工具，无需手动替换字体文件，从iconfont拿到链接，命令一键替换，提高开发效率
+
+
+## 代码架构
+- 统一定制 layout 布局，传入菜单对象即可。
+- 所有路由写入菜单对象中，生成全局路由表，无需再去配置，统一管理
+- page 输出页面
+- component 
+  - common  公共组件
+  - page 对应到页面的 UI 
+- model 数据逻辑（redux）
+- service 请求
+- config 放一些静态的全局变量
+- 
 
 
 ## 记录下我在搭建这个模板的过程中遇到的问题

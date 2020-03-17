@@ -1,7 +1,6 @@
 declare namespace IndexScssModule {
   export interface IIndexScss {
     nav: string;
-    navLink: string;
   }
 }
 

@@ -1,3 +1,9 @@
 .nav {
-  
+  :global {
+    .ant-menu-submenu-title {
+      .ant-menu-submenu {
+        display: none !important;
+      }
+    }
+  }
 }

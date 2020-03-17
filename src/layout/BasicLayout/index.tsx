@@ -7,9 +7,11 @@ const { SubMenu } = Menu;
 
 interface IProps extends RouteComponentProps {
   menuData: MenuDataItem[] // 菜单数据
+  collapsed: boolean
 }
 
 let target = null
+let openKeys = new Set()
 
 // 会根据当前 pathname 找到选中的menu key，openKey
 const getRoutesAndMenuKey = (
@@ -17,25 +19,16 @@ const getRoutesAndMenuKey = (
   menu: MenuDataItem[]
 ) => {
   if (menu?.length && pathname) {
-
     getMenuItemKeys(pathname, menu)
     const pathArr = target?.path?.split('/').filter(o => o)
-    const openKeys = []
     pathArr?.length && pathArr.map((item, index) => {
       if (index === 0) {
-        openKeys.push(`/${item}`)
+        openKeys.add(`/${item}`)
       } else if (index < (pathArr.length - 1)) {
-        openKeys.push(`/${pathArr[index - 1]}/${item}`)
+        openKeys.add(`/${pathArr[index - 1]}/${item}`)
       }
     })
-
-    // console.log("pathname:", pathname);
-    // console.log("pathArr:", pathArr);
-    // console.log("openKeys:", openKeys);
-    console.log("target:", target);
-
-
-    return { selectKey: target?.path, openKeys }
+    return { selectKey: target?.path, openKeys: [...openKeys] }
   } else {
     return { selectKey: [], openKeys: [] }
   }
@@ -49,7 +42,7 @@ const getMenuItemKeys = (pathname: string, menu: MenuDataItem[]) => {
 }
 
 const Index: React.FC<IProps> = (props: IProps) => {
-  const { menuData, history } = props
+  const { menuData, history, collapsed } = props
   const location = useLocation()
   const [selectKey, setSelectKey] = useState<{ selectKey: string[], openKeys: string[] }>(getRoutesAndMenuKey(location.pathname, menuData))
 
@@ -98,9 +91,13 @@ const Index: React.FC<IProps> = (props: IProps) => {
       mode="inline"
       theme="light"
       className={styles.nav}
-      openKeys={selectKey.openKeys}
+      openKeys={collapsed ? [] : selectKey.openKeys}
       selectedKeys={selectKey.selectKey}
-      onOpenChange={(keys) => setSelectKey({ ...selectKey, openKeys: keys })}
+      onOpenChange={(keys) => {
+        openKeys = new Set(keys)
+        setSelectKey({ ...selectKey, openKeys: keys })
+      }}
+      getPopupContainer={(menuDataNode) => menuDataNode}
     >
       {renderMenuItem(menuData)}
     </Menu>

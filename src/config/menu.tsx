@@ -2,22 +2,19 @@
  * @Author: JC.Liu
  * @Date: 2020-03-11 17:25:29
  * @Last Modified by: JC.Liu
- * @Last Modified time: 2020-03-16 14:57:21
+ * @Last Modified time: 2020-03-16 17:44:23
  * 菜单表
  */
 import React from 'react'
 import Icon, { IconClass } from '@/component/common/Icon'
 import { Icon as AntdIcon } from 'antd'
-
-import Menu1 from '@/page/menu1'
 import Menu1Home from '@/page/menu1/home'
 import Menu1HomeDetail from '@/page/menu1/home/detail'
-
-import Menu2 from '@/page/menu2'
 import Menu2Home from '@/page/menu2/home'
 import Menu2List from '@/page/menu2/list'
 import App from '@/App'
 import ErrorCom from '@/component/common/Error'
+import Com404 from '@/component/common/404'
 
 const menu = [
   {
@@ -96,20 +93,33 @@ const menu = [
         icon: <AntdIcon component={() => <Icon type={IconClass.ENU} />} />,
       },
     ]
-  }, {
-    // 这里是放不在菜单上的路由
+  }
+]
+
+// 这里是放不在菜单上的公共路由
+const whiteMenu = [
+  {
     name: 'app',
     path: '/app',
     display: false,
     icon: <AntdIcon type="app" />,
     component: App,
+    children: []
   }, {
     name: 'error',
     path: '/error',
     display: false,
     icon: <AntdIcon type="app" />,
     component: ErrorCom,
+    children: []
+  }, {
+    name: '404',
+    path: '/404',
+    display: false,
+    icon: <AntdIcon type="app" />,
+    component: Com404,
+    children: []
   }
 ]
 
-export default menu;
+export default menu.concat(whiteMenu);

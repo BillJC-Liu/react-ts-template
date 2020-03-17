@@ -12,12 +12,12 @@ import './style/base.css'
 // 创建 store
 const store = registerEkko(allModel)
 // 前端单页路由白名单 layout 在白名单中的路由下不会有菜单出现
-const whiteRoute = ['/app', '/error']
+const whiteRoute = ['/app', '/error', '/404']
 
 ReactDOM.render(
   <ConfigProvider>
     <Provider store={store}>
-      <Router basename="/">
+      <Router basename="/#">
         <Layout whiteRoute={whiteRoute}>
           <Routes />
         </Layout>

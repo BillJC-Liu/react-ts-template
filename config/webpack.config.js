@@ -5,6 +5,14 @@ const webpack = require('webpack');
 const postcssNormalize = require('postcss-normalize');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ProgressBarPlugin = require("progress-bar-webpack-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const safePostCssParser = require('postcss-safe-parser');
+const chalk = require('chalk')
+const os = require('os')
+const HappyPack = require("happypack");
+const threadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 process.env.NODE_ENV = 'development'
 
@@ -36,11 +44,9 @@ module.exports = function (webpackEnv) {
       isEnvProduction && {
         loader: MiniCssExtractPlugin.loader,
         // options: shouldUseRelativeAssetPaths ? { publicPath: '../../' } : {},
-      },
-      {
+      }, {
         loader: '@teamsupercell/typings-for-css-modules-loader'
-      },
-      {
+      }, {
         loader: require.resolve('css-loader'),
         options: {
           ...cssOptions,
@@ -93,13 +99,9 @@ module.exports = function (webpackEnv) {
   }
 
   return {
-    // mode: isEnvDevelopment ? 'development' : isEnvProduction && 'production',
-    mode: 'development',
+    mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
     // sourceMap 报错代码行数跟踪
-    devtool:
-      isEnvProduction ?
-        'source-map' :
-        isEnvDevelopment ? 'cheap-module-source-map' : 'cheap-module-source-map',
+    devtool: isEnvProduction ? 'source-map' : isEnvDevelopment ? 'cheap-module-source-map' : 'cheap-module-source-map',
     devServer: {
       // 是否在起服务后去打开页面
       open: false,
@@ -111,6 +113,7 @@ module.exports = function (webpackEnv) {
       // 如果找不到页面，就会默认返回首页 。 弊端：无法使用 SSR 。
       // 根路径下就会挂载入口js文件
       // HashHistory 根路径后面添加一个#号
+      // 没有hash的时候 ，找不到对应的页面会返回 index.html 只在本地有效
       historyApiFallback: true,
     },
     entry: [
@@ -119,7 +122,7 @@ module.exports = function (webpackEnv) {
       // 入口文件
       resolveModule(resolveApp, 'src/index'),
       // 引入polyfills 兼容IE
-      // require.resolve('./polyfills'),
+      require.resolve('@babel/polyfill'),
     ].filter(Boolean),
     output: {
       // 在编译时不知道最终输出文件的 publicPath 的情况下，
@@ -134,7 +137,6 @@ module.exports = function (webpackEnv) {
       // 打包出来的文件名
       filename: 'build/[name].[hash:8].js',
       // 将js代码进行分割 它应该与filename相同
-      // 将页面代码进行分割，减少首页的大小，从而优化首屏速度
       chunkFilename: 'build/[name].[hash:8].js'
       // devtoolModuleFilenameTemplate
     },
@@ -150,6 +152,31 @@ module.exports = function (webpackEnv) {
         '@com': resolveApp('src/component'),
         '@page': resolveApp('src/page'),
         '@model': resolveApp('src/model'),
+      },
+    },
+    optimization: {
+      minimize: isEnvProduction, // 生产环境下压缩
+      minimizer: [
+        // 只有在生产环境下开启
+        new OptimizeCSSAssetsPlugin({
+          cssProcessorOptions: {
+            parser: safePostCssParser,
+            map: shouldUseSourceMap
+              ? {
+                inline: false,  //`inline：false`强制将源地图输出到单独的文件 
+                annotation: true, //`annotation：true`将sourceMappingURL附加到 css文件，帮助浏览器找到源地图 
+              }
+              : false,
+          },
+        }),
+      ],
+      splitChunks: {
+        chunks: 'all',
+        name: true,
+      },
+      // 将运行时块分开以启用长期缓存
+      runtimeChunk: {
+        name: entrypoint => `runtime-${entrypoint.name}`,
       },
     },
     module: {
@@ -180,8 +207,7 @@ module.exports = function (webpackEnv) {
             cacheCompression: false,
             compact: isEnvProduction,
           },
-        },
-        {
+        }, {
           test: /\.(png|jpg|gif)$/,
           loader: 'url-loader',
           options: {
@@ -205,9 +231,8 @@ module.exports = function (webpackEnv) {
             // 2的意思是用postcss-loaders和sass-loader加载器
             importLoaders: 1,
             // 不能在css中进行模块化，因为会导致antd 在使用css样式的模式下，className被hash掉
-          })
-        },
-        {
+          }),
+        }, {
           test: /\.module\.css?$/,
           use: getStyleLoaders({
             importLoaders: 1,
@@ -217,8 +242,7 @@ module.exports = function (webpackEnv) {
               localIdentName: '[local]_[hash:base64:6]',
             },
           }),
-        },
-        {
+        }, {
           test: /\.(scss|sass)$/,
           use: getStyleLoaders({
             importLoaders: 2,
@@ -233,8 +257,7 @@ module.exports = function (webpackEnv) {
             // sass: true,
             // typings-for-css-modules-loader
           }, 'sass-loader'),
-        },
-        {
+        }, {
           test: /\.module\.(scss|sass)$/,
           use: getStyleLoaders(
             {
@@ -244,15 +267,14 @@ module.exports = function (webpackEnv) {
             },
             'sass-loader'
           ),
-        },
-        {
+        }, {
           test: /\.less$/,
           exclude: /\.module\.less$/,
           use: getStyleLoaders({
             importLoaders: 2
           }, 'less-loader')
         },
-      ]
+      ],
     },
     plugins: [
       // cleanWebpackPlugin 清楚打包好的文件夹
@@ -285,12 +307,44 @@ module.exports = function (webpackEnv) {
         // Options similar to the same options in webpackOptions.output
         // both options are optional
         // static/css/
-        filename: 'index.css',
+        // filename: 'index.css',
         allChunks: true,
+        filename: 'static/css/[name].[contenthash:8].css',
+        chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
         // filename: '[name].[contenthash:8].css',
         // chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
       }),
+      // 热更新插件
       isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
-    ].filter(Boolean),
+      // 打包进度可视化
+      new ProgressBarPlugin({
+        format: "  build [:bar] " + chalk.green.bold(":percent") + " (:elapsed seconds)",
+        clear: false
+      }),
+      // 多线程打包js文件
+      new HappyPack({
+        id: "happyPackerJs",
+        debug: false,
+        verbose: false,
+        loaders: [
+          {
+            loader: "babel-loader",
+            query: { presets: ["@babel/react", "@babel/env"] }
+          }
+        ],
+        threadPool: threadPool
+      }),
+
+      // 可视化打体积分布图
+      // new BundleAnalyzerPlugin({
+      //   analyzerMode: 'server',
+      //   generateStatsFile: true,
+      //   analyzerHost: '127.0.0.1',
+      //   analyzerPort: 8889,
+      //   statsOptions: { source: false },
+      //   statsFilename: 'stats.json',
+      // })
+
+    ].filter(Boolean)
   }
 }

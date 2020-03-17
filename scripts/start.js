@@ -114,7 +114,6 @@ new Promise((resolve, reject) => {
     console.log(chalk.cyan('Starting the development server...\n'));
     // 打开浏览器
     openBrowser(urls.localUrlForBrowser);
-    console.log(`服务已启在 ${newPort} 端口`);
   });
 }).catch(err => {
   if (err && err.message) {

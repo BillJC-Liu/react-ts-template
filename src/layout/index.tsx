@@ -58,10 +58,14 @@ const Index = (props: IProps) => {
           collapsedWidth={56}
         >
           <div
-            onMouseEnter={() => { collapseClickStatus && collapsed ? setCollapsed(false) : null }}
-            onMouseLeave={() => { collapseClickStatus && !collapsed ? setCollapsed(true) : false }}
+            onMouseEnter={(e) => {
+              collapseClickStatus && collapsed ? setCollapsed(false) : null
+            }}
+            onMouseLeave={(e) => {
+              collapseClickStatus && !collapsed ? setCollapsed(true) : false
+            }}
           >
-            <BasicLayout menuData={menuData} />
+            <BasicLayout menuData={menuData} collapsed={collapsed} />
           </div>
         </Sider>
         <Content>
